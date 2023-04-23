@@ -15,6 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 
 require("./config/mongoose.config")(DB);
 
+// routes
+require("./routes/User.routes")(app);
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
