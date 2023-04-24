@@ -22,10 +22,7 @@ module.exports = {
           .cookie("usertoken", userToken, process.env.SECRET_KEY, {
             httpOnly: true,
           })
-          .json({
-            msg: "success!",
-            currentUser: { name: user.name, email: user.email },
-          });
+          .json({ username: user.username, id: user._id });
       });
     }
   },
@@ -55,6 +52,20 @@ module.exports = {
       .cookie("usertoken", userToken, process.env.SECRET_KEY, {
         httpOnly: true,
       })
-      .json({ name: user.name, email: user.email });
+      .json({ username: user.username, id: user._id });
+  },
+  findPrivateContext: async (req, res) => {
+    if (!req.cookies.usertoken) return res.status(400);
+    let decoded = jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY);
+    User.findById(decoded.id)
+      .then((user) =>
+        res.status(200).json({ username: user.username, id: user._id })
+      )
+      .catch((error) =>
+        res.status(400).json({ errors: "you are not logged in" })
+      );
+  },
+  logout: (req, res) => {
+    res.clearCookie("usertoken").sendStatus(200);
   },
 };
