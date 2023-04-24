@@ -58,7 +58,7 @@ const LoginAccount = () => {
           type='submit'
           className='border-2 border-black bg-green-300 py-2 px-6 rounded-md'
           onClick={(e) => loginAccount(e)}>
-          Create Account
+          Login
         </button>
       </form>
     </>
